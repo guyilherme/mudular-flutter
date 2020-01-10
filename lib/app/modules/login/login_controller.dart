@@ -19,6 +19,12 @@ abstract class _LoginBase with Store {
   @observable
   String senha = '';
 
+  @observable
+  bool logado = false;
+
+  @action
+  changeLogado(bool value) => logado = value;
+
   @action
   changeEmail(String value) => email = value;
 
@@ -42,14 +48,15 @@ abstract class _LoginBase with Store {
 
   Future<String> login(String email, String senha) async {
     var res = await repo.login({
-      "email": email,
+      "username": email,
       "password": senha,
       "grant_type": "password",
       "client_id": IDENTIFIER,
       "client_secret": SECRET,
       "scope": ""
     });
-    jwt = "Bearer ${res['access_token']}";
+    changeJwt("Bearer ${res['access_token']}");
+    changeLogado(true);
     return jwt;
   }
 }

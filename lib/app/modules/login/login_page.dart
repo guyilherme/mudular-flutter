@@ -14,39 +14,22 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final loginController = LoginModule.to.get<LoginController>();
 
-  // _textField({String label, onEditingComplete, String Function() errorText}) {
-  //   return TextField(
-  //     decoration: InputDecoration(
-  //         border: OutlineInputBorder(),
-  //         labelText: label,
-  //         errorText: errorText == null ? null : errorText()),
-  //     onEditingComplete: onEditingComplete,
-  //   );
-  // }
+  _textField(
+      {String label, bool password, onChanged, String Function() errorText}) {
+    return TextField(
+      obscureText: password == true ? true : false,
+      decoration: InputDecoration(
+          border: OutlineInputBorder(),
+          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          labelText: label,
+          errorText: errorText == null ? null : errorText()),
+      onChanged: onChanged,
+    );
+  }
 
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
   @override
   Widget build(BuildContext context) {
-    final emailField = TextField(
-      autofocus: true,
-      obscureText: false,
-      style: style,
-      decoration: InputDecoration(
-          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "Email",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
-    );
-    final passwordField = TextField(
-      autofocus: true,
-      obscureText: true,
-      style: style,
-      decoration: InputDecoration(
-          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "Senha",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
-    );
     final loginButon = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
@@ -54,7 +37,12 @@ class _LoginPageState extends State<LoginPage> {
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: () {},
+        onPressed: () {
+          loginController.login(loginController.email, loginController.senha);
+          if (loginController.logado == true) {
+            Navigator.pushNamed(context, '/home');
+          }
+        },
         child: Text("Login",
             textAlign: TextAlign.center,
             style: style.copyWith(
@@ -82,17 +70,25 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     SizedBox(height: 45.0),
-                    emailField,
-                    // Observer(
-                    //   builder: (_) {
-                    //     return _textField(
-                    //         label: "Login",
-                    //         onEditingComplete: loginController.changeEmail,
-                    //         errorText: loginController.validateEmail);
-                    //   },
-                    // ),
+                    // emailField,
+                    Observer(
+                      builder: (_) {
+                        return _textField(
+                            label: "Email",
+                            onChanged: loginController.changeEmail,
+                            errorText: loginController.validateEmail);
+                      },
+                    ),
                     SizedBox(height: 25.0),
-                    passwordField,
+                    Observer(
+                      builder: (_) {
+                        return _textField(
+                            label: "Senha",
+                            password: true,
+                            onChanged: loginController.changeEmail,
+                            errorText: loginController.validateEmail);
+                      },
+                    ),
                     SizedBox(
                       height: 35.0,
                     ),
