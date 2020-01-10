@@ -14,8 +14,8 @@ class LoginRepository extends Disposable {
 
   Future<Map> login(Map<String, dynamic> data) async {
     try {
-      var res =
-          await _dio.post('http://localhost:5000/oauth/token', data: data);
+      _dio.options.contentType = Headers.formUrlEncodedContentType;
+      var res = await _dio.post(TOKEN_END_POINT, data: data);
       return res.data;
     } on DioError catch (e) {
       throw (e.message);

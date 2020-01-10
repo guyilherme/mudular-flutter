@@ -38,10 +38,14 @@ class _LoginPageState extends State<LoginPage> {
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () {
-          loginController.login(loginController.email, loginController.senha);
-          if (loginController.logado == true) {
-            Navigator.pushNamed(context, '/home');
-          }
+          loginController
+              .login(loginController.email, loginController.senha)
+              .then((e) {
+            if (loginController.logado == true) {
+              print(e);
+              Navigator.pushNamed(context, '/home');
+            }
+          });
         },
         child: Text("Login",
             textAlign: TextAlign.center,
@@ -85,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
                         return _textField(
                             label: "Senha",
                             password: true,
-                            onChanged: loginController.changeEmail,
+                            onChanged: loginController.changeSenha,
                             errorText: loginController.validateEmail);
                       },
                     ),
