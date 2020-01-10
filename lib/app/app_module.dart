@@ -2,7 +2,7 @@ import 'package:teha/app/app_controller.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter/material.dart';
 import 'package:teha/app/app_widget.dart';
-import 'package:teha/app/modules/home/home_module.dart';
+import 'package:teha/app/modules/login/login_module.dart';
 
 class AppModule extends MainModule {
   @override
@@ -12,7 +12,7 @@ class AppModule extends MainModule {
 
   @override
   List<Router> get routers => [
-        Router('/', module: HomeModule()),
+        Router('/', module: LoginModule()),
       ];
 
   @override
