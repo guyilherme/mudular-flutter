@@ -39,7 +39,7 @@ abstract class _LoginBase with Store {
   }
 
   String validateEmail() {
-    if (email == null || email.isEmpty) {
+    if (email == null) {
       return "Este campo é obrigatório";
     } else {
       return null;
@@ -55,8 +55,8 @@ abstract class _LoginBase with Store {
       "client_secret": SECRET,
       "scope": ""
     });
-    changeJwt("Bearer ${res['access_token']}");
-    changeLogado(true);
+    jwt = "Bearer ${res['access_token']}";
+    logado = true;
     return jwt;
   }
 }

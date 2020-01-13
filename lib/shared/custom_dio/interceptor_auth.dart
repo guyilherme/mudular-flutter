@@ -11,6 +11,7 @@ class AuthInterceptors extends InterceptorsWrapper {
     CustomDio dio = AppModule.to.get<CustomDio>();
 
     var jwt = auth.jwt;
+    print(auth.jwt);
     if (jwt == null || jwt == '') {
       dio.client.lock();
       options.contentType = Headers.formUrlEncodedContentType;

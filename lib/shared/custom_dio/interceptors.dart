@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 class CustomInterceptors extends InterceptorsWrapper {
   @override
   Future onRequest(RequestOptions options) {
-    print("REQUEgxfgST[${options.method}] => PATH: ${options.path}");
+    print("REQUEST[${options.method}] => PATH: ${options.path}");
     return super.onRequest(options);
   }
 

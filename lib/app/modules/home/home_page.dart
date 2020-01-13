@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:teha/app/modules/sidemenu/sidemenu_widget.dart';
 
 class HomePage extends StatefulWidget {
   final String title;
@@ -15,8 +16,17 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
+      drawer: SidemenuWidget(
+        context: context,
+      ),
       body: Column(
-        children: <Widget>[],
+        children: <Widget>[
+          RaisedButton(
+            onPressed: () {
+              Navigator.pushNamed(context, "/categorias");
+            },
+          )
+        ],
       ),
     );
   }

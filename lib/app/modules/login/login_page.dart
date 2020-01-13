@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:teha/app/modules/login/login_controller.dart';
 import 'package:teha/app/modules/login/login_module.dart';
+import 'package:toast/toast.dart';
 
 class LoginPage extends StatefulWidget {
   final String title;
@@ -43,8 +44,17 @@ class _LoginPageState extends State<LoginPage> {
               .then((e) {
             if (loginController.logado == true) {
               print(e);
-              Navigator.pushNamed(context, '/home');
+              Navigator.popAndPushNamed(context, '/home');
             }
+          }).catchError((e) {
+            print(e);
+            Toast.show("Login incorreto", context,
+                duration: Toast.LENGTH_LONG,
+                border: Border.all(),
+                gravity: Toast.CENTER,
+                textColor: Colors.red,
+                backgroundRadius: 10,
+                backgroundColor: Colors.white);
           });
         },
         child: Text("Login",

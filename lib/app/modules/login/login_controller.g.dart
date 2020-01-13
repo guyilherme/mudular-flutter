@@ -60,7 +60,34 @@ mixin _$LoginController on _LoginBase, Store {
     }, _$senhaAtom, name: '${_$senhaAtom.name}_set');
   }
 
+  final _$logadoAtom = Atom(name: '_LoginBase.logado');
+
+  @override
+  bool get logado {
+    _$logadoAtom.context.enforceReadPolicy(_$logadoAtom);
+    _$logadoAtom.reportObserved();
+    return super.logado;
+  }
+
+  @override
+  set logado(bool value) {
+    _$logadoAtom.context.conditionallyRunInAction(() {
+      super.logado = value;
+      _$logadoAtom.reportChanged();
+    }, _$logadoAtom, name: '${_$logadoAtom.name}_set');
+  }
+
   final _$_LoginBaseActionController = ActionController(name: '_LoginBase');
+
+  @override
+  dynamic changeLogado(bool value) {
+    final _$actionInfo = _$_LoginBaseActionController.startAction();
+    try {
+      return super.changeLogado(value);
+    } finally {
+      _$_LoginBaseActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   dynamic changeEmail(String value) {
