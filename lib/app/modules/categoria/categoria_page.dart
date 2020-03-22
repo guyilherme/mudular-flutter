@@ -17,7 +17,6 @@ class _CategoriaPageState extends State<CategoriaPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     loginController.getCategorias();
     sort = false;
@@ -26,10 +25,10 @@ class _CategoriaPageState extends State<CategoriaPage> {
   onSortColum(int columnIndex, bool ascending) {
     if (columnIndex == 0) {
       if (ascending) {
-        loginController.categoriasLista.data
+        loginController.categoriasLista
             .sort((a, b) => a.nome.compareTo(b.nome));
       } else {
-        loginController.categoriasLista.data
+        loginController.categoriasLista
             .sort((a, b) => b.nome.compareTo(a.nome));
       }
     }
@@ -40,8 +39,13 @@ class _CategoriaPageState extends State<CategoriaPage> {
       scrollDirection: Axis.vertical,
       child: DataTable(
         sortAscending: sort,
-        sortColumnIndex: 0,
+        sortColumnIndex: 1,
         columns: [
+          DataColumn(
+            label: Text("ID"),
+            numeric: true,
+            tooltip: "Identificação da Categoria",
+          ),
           DataColumn(
               label: Text("Nome"),
               numeric: false,
@@ -53,28 +57,30 @@ class _CategoriaPageState extends State<CategoriaPage> {
                 onSortColum(columnIndex, ascending);
               }),
           DataColumn(
-            label: Text("Atualizado"),
+            label: Text("Ações"),
             numeric: false,
-            tooltip: "Ultima Atualização",
+            tooltip: "Ações",
           ),
         ],
-        rows: loginController.categoriasLista.data
+        rows: loginController.categoriasLista
             .map(
-              (categoria) => DataRow(
-                  onSelectChanged: (b) {
-                    print("Onselect");
+              (categoria) => DataRow(cells: [
+                DataCell(
+                  Text('${categoria.id}'),
+                ),
+                DataCell(
+                  Text(categoria.nome),
+                  onTap: () {
+                    print('Selected ${categoria.nome}');
                   },
-                  cells: [
-                    DataCell(
-                      Text(categoria.nome),
-                      onTap: () {
-                        print('Selected ${categoria.nome}');
-                      },
-                    ),
-                    DataCell(
-                      Text(categoria.updatedAt),
-                    ),
-                  ]),
+                ),
+                DataCell(
+                  Icon(Icons.edit),
+                  onTap: () {
+                    print('Selected ${categoria.id}');
+                  },
+                ),
+              ]),
             )
             .toList(),
       ),
@@ -86,6 +92,15 @@ class _CategoriaPageState extends State<CategoriaPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.note_add),
+            tooltip: 'Nova Categoria',
+            onPressed: () {
+              Navigator.pushNamed(context, "/categorias/new");
+            },
+          ),
+        ],
       ),
       body: Column(
         mainAxisSize: MainAxisSize.max,
@@ -102,26 +117,6 @@ class _CategoriaPageState extends State<CategoriaPage> {
           )
         ],
       ),
-      // body: Observer(
-      //     builder: (_) => (loginController.categoriasLista != null)
-      //         ? ListView.builder(
-      //             itemCount: loginController.categoriasLista.data.length,
-      //             itemBuilder: (_, index) {
-      //               final listaCategorias =
-      //                   loginController.categoriasLista.data[index];
-      //               return Card(
-      //                 child: ListTile(
-      //                   title: Text(listaCategorias.nome),
-      //                   onTap: () {
-      //                     print(listaCategorias.id);
-      //                     print(listaCategorias.nome);
-      //                   },
-      //                 ),
-      //               );
-      //             })
-      //         : Center(
-      //             child: CircularProgressIndicator(),
-      //           )),
     );
   }
 }

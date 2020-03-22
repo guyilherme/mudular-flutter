@@ -12,14 +12,14 @@ mixin _$CategoriaController on _CategoriaBase, Store {
   final _$categoriasListaAtom = Atom(name: '_CategoriaBase.categoriasLista');
 
   @override
-  CategoriaListaModel get categoriasLista {
+  List<CategoriaModel> get categoriasLista {
     _$categoriasListaAtom.context.enforceReadPolicy(_$categoriasListaAtom);
     _$categoriasListaAtom.reportObserved();
     return super.categoriasLista;
   }
 
   @override
-  set categoriasLista(CategoriaListaModel value) {
+  set categoriasLista(List<CategoriaModel> value) {
     _$categoriasListaAtom.context.conditionallyRunInAction(() {
       super.categoriasLista = value;
       _$categoriasListaAtom.reportChanged();

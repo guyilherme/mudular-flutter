@@ -10,7 +10,7 @@ class AppWidget extends StatelessWidget {
         primarySwatch: Colors.green,
         accentColor: Colors.orange,
         textTheme: TextTheme(
-          display2: TextStyle(
+          headline3: TextStyle(
             fontFamily: 'OpenSans',
             fontSize: 45.0,
             color: Colors.orange,
@@ -18,8 +18,8 @@ class AppWidget extends StatelessWidget {
           button: TextStyle(
             fontFamily: 'OpenSans',
           ),
-          subhead: TextStyle(fontFamily: 'NotoSans'),
-          body1: TextStyle(fontFamily: 'NotoSans'),
+          subtitle1: TextStyle(fontFamily: 'NotoSans'),
+          bodyText2: TextStyle(fontFamily: 'NotoSans'),
         ),
       ),
       initialRoute: '/',
