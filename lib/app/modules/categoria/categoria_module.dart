@@ -10,7 +10,7 @@ import 'package:teha/shared/custom_dio/custom_dio.dart';
 class CategoriaModule extends ChildModule {
   @override
   List<Bind> get binds => [
-        Bind((i) => CategoriaNovaController()),
+        Bind((i) => CategoriaNovaController(i.get<CategoriaRepository>())),
         Bind((i) => CategoriaRepository(AppModule.to.get<CustomDio>())),
         Bind((i) => CategoriaController(i.get<CategoriaRepository>())),
       ];

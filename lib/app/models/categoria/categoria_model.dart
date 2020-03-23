@@ -16,10 +16,18 @@ class CategoriaModel {
   });
 
   CategoriaModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    nome = json['Nome'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
+    if (json['id'] != null) {
+      id = json['id'];
+    }
+    if (json['Nome'] != null) {
+      nome = json['Nome'];
+    }
+    if (json['created_at'] != null) {
+      createdAt = json['created_at'];
+    }
+    if (json['updated_at'] != null) {
+      updatedAt = json['updated_at'];
+    }
     if (json['produtos'] != null) {
       produtos = new List<ProdutoModel>();
       json['produtos'].forEach((v) {
@@ -30,10 +38,18 @@ class CategoriaModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['Nome'] = this.nome;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    if (this.id != null) {
+      data['id'] = this.id;
+    }
+    if (this.nome != null) {
+      data['Nome'] = this.nome;
+    }
+    if (this.createdAt != null) {
+      data['created_at'] = this.createdAt;
+    }
+    if (this.updatedAt != null) {
+      data['updated_at'] = this.updatedAt;
+    }
     if (this.produtos != null) {
       data['produtos'] = this.produtos.map((v) => v.toJson()).toList();
     }

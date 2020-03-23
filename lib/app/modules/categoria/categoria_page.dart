@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:teha/app/modules/categoria/categoria_controller.dart';
 import 'package:teha/app/modules/categoria/categoria_module.dart';
+import 'package:teha/app/modules/categoria/categoria_nova/categoria_nova_controller.dart';
+import 'package:toast/toast.dart';
 
 class CategoriaPage extends StatefulWidget {
   final String title;
@@ -12,23 +14,32 @@ class CategoriaPage extends StatefulWidget {
 }
 
 class _CategoriaPageState extends State<CategoriaPage> {
-  final loginController = CategoriaModule.to.get<CategoriaController>();
+  final categoriaController = CategoriaModule.to.get<CategoriaController>();
+  final novaCategoriaController =
+      CategoriaModule.to.get<CategoriaNovaController>();
   bool sort;
 
   @override
   void initState() {
     super.initState();
-    loginController.getCategorias();
+    categoriaController.getCategorias();
     sort = false;
+    if (novaCategoriaController.categoriaCadastrada) {
+      Toast.show(
+        "Categoria cadastrada",
+        context,
+        duration: Toast.LENGTH_LONG,
+      );
+    }
   }
 
   onSortColum(int columnIndex, bool ascending) {
     if (columnIndex == 0) {
       if (ascending) {
-        loginController.categoriasLista
+        categoriaController.categoriasLista
             .sort((a, b) => a.nome.compareTo(b.nome));
       } else {
-        loginController.categoriasLista
+        categoriaController.categoriasLista
             .sort((a, b) => b.nome.compareTo(a.nome));
       }
     }
@@ -62,7 +73,7 @@ class _CategoriaPageState extends State<CategoriaPage> {
             tooltip: "Ações",
           ),
         ],
-        rows: loginController.categoriasLista
+        rows: categoriaController.categoriasLista
             .map(
               (categoria) => DataRow(cells: [
                 DataCell(
@@ -109,7 +120,7 @@ class _CategoriaPageState extends State<CategoriaPage> {
         children: <Widget>[
           Expanded(
             child: Observer(
-                builder: (_) => (loginController.categoriasLista != null)
+                builder: (_) => (categoriaController.categoriasLista != null)
                     ? dataBody()
                     : Center(
                         child: CircularProgressIndicator(),

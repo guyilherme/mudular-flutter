@@ -19,6 +19,15 @@ class CategoriaRepository extends Disposable {
     }
   }
 
+  Future<dynamic> newCategorias(Map<String, dynamic> data) async {
+    try {
+      var response = await _dio.client.post("/categorias", data: data);
+      return response;
+    } on DioError catch (e) {
+      throw (e.message);
+    }
+  }
+
   //dispose will be called automatically
   @override
   void dispose() {}
