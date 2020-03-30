@@ -3,15 +3,15 @@ import 'package:teha/app/models/categoria/categoria_model.dart';
 import 'package:teha/app/modules/categoria/categoria_repository.dart';
 import 'package:validators/validators.dart';
 
-part 'categoria_nova_controller.g.dart';
+part 'categoria_editar_controller.g.dart';
 
-class CategoriaNovaController = _CategoriaNovaControllerBase
-    with _$CategoriaNovaController;
+class CategoriaEditarController = _CategoriaEditarControllerBase
+    with _$CategoriaEditarController;
 
-abstract class _CategoriaNovaControllerBase with Store {
+abstract class _CategoriaEditarControllerBase with Store {
   final FormErrorState error = FormErrorState();
   final CategoriaRepository repo;
-  _CategoriaNovaControllerBase(this.repo);
+  _CategoriaEditarControllerBase(this.repo);
 
   @observable
   String nomeCategoria = "";
@@ -28,9 +28,7 @@ abstract class _CategoriaNovaControllerBase with Store {
   @action
   changeNomeCategoria(String value) {
     nomeCategoria = value;
-    Map<String, dynamic> data = new Map<String, dynamic>();
-    data['nome'] = value;
-    categoria = new CategoriaModel.fromJson(data);
+    categoria.nome = nomeCategoria;
   }
 
   List<ReactionDisposer> _disposers;
@@ -57,9 +55,20 @@ abstract class _CategoriaNovaControllerBase with Store {
     }
   }
 
-  Future<dynamic> newCategoria(CategoriaModel categoria) async {
+  Future<dynamic> changeCategoria(CategoriaModel categoria) async {
     var res = await repo.newCategorias(categoria.toJson());
     return res;
+  }
+
+  @action
+  getCategoria({int id}) async {
+    try {
+      final res = await repo.getCategoria(id: id);
+      categoria = res;
+      nomeCategoria = categoria.nome;
+    } catch (e) {
+      throw (e.response.statusCode);
+    }
   }
 }
 

@@ -14,7 +14,7 @@ description: A new Flutter project.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
   validators: ^2.0.0+1
@@ -80,4 +80,5 @@ flutter:
 
 scripts:
   build: flutter pub run build_runner build
+  watch: flutter pub run build_runner watch
   clean: flutter pub run build_runner clean

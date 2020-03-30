@@ -26,10 +26,58 @@ mixin _$CategoriaController on _CategoriaBase, Store {
     }, _$categoriasListaAtom, name: '${_$categoriasListaAtom.name}_set');
   }
 
+  final _$statusAtom = Atom(name: '_CategoriaBase.status');
+
+  @override
+  dynamic get status {
+    _$statusAtom.context.enforceReadPolicy(_$statusAtom);
+    _$statusAtom.reportObserved();
+    return super.status;
+  }
+
+  @override
+  set status(dynamic value) {
+    _$statusAtom.context.conditionallyRunInAction(() {
+      super.status = value;
+      _$statusAtom.reportChanged();
+    }, _$statusAtom, name: '${_$statusAtom.name}_set');
+  }
+
+  final _$lastPageAtom = Atom(name: '_CategoriaBase.lastPage');
+
+  @override
+  int get lastPage {
+    _$lastPageAtom.context.enforceReadPolicy(_$lastPageAtom);
+    _$lastPageAtom.reportObserved();
+    return super.lastPage;
+  }
+
+  @override
+  set lastPage(int value) {
+    _$lastPageAtom.context.conditionallyRunInAction(() {
+      super.lastPage = value;
+      _$lastPageAtom.reportChanged();
+    }, _$lastPageAtom, name: '${_$lastPageAtom.name}_set');
+  }
+
   final _$getCategoriasAsyncAction = AsyncAction('getCategorias');
 
   @override
-  Future getCategorias() {
-    return _$getCategoriasAsyncAction.run(() => super.getCategorias());
+  Future getCategorias({int page}) {
+    return _$getCategoriasAsyncAction
+        .run(() => super.getCategorias(page: page));
+  }
+
+  final _$_CategoriaBaseActionController =
+      ActionController(name: '_CategoriaBase');
+
+  @override
+  dynamic changeLastPage(int value) {
+    final _$actionInfo = _$_CategoriaBaseActionController.startAction();
+    try {
+      return super.changeLastPage(value);
+    } finally {
+      _$_CategoriaBaseActionController.endAction(_$actionInfo);
+    }
   }
 }

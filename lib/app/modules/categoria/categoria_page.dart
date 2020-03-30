@@ -3,7 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:teha/app/modules/categoria/categoria_controller.dart';
 import 'package:teha/app/modules/categoria/categoria_module.dart';
 import 'package:teha/app/modules/categoria/categoria_nova/categoria_nova_controller.dart';
-import 'package:toast/toast.dart';
+import 'package:teha/app/modules/categoria/data_search/data_search_widget.dart';
 
 class CategoriaPage extends StatefulWidget {
   final String title;
@@ -15,87 +15,63 @@ class CategoriaPage extends StatefulWidget {
 
 class _CategoriaPageState extends State<CategoriaPage> {
   final categoriaController = CategoriaModule.to.get<CategoriaController>();
+  ScrollController _scrollController = new ScrollController();
   final novaCategoriaController =
       CategoriaModule.to.get<CategoriaNovaController>();
   bool sort;
+  int page = 1;
 
   @override
   void initState() {
     super.initState();
-    categoriaController.getCategorias();
-    sort = false;
-    if (novaCategoriaController.categoriaCadastrada) {
-      Toast.show(
-        "Categoria cadastrada",
-        context,
-        duration: Toast.LENGTH_LONG,
-      );
-    }
-  }
-
-  onSortColum(int columnIndex, bool ascending) {
-    if (columnIndex == 0) {
-      if (ascending) {
-        categoriaController.categoriasLista
-            .sort((a, b) => a.nome.compareTo(b.nome));
-      } else {
-        categoriaController.categoriasLista
-            .sort((a, b) => b.nome.compareTo(a.nome));
+    categoriaController.getCategorias(page: page);
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+              _scrollController.position.maxScrollExtent &&
+          page < categoriaController.lastPage) {
+        setState(() {
+          page = page + 1;
+        });
+        categoriaController.getCategorias(page: page);
       }
-    }
+    });
   }
 
-  SingleChildScrollView dataBody() {
-    return SingleChildScrollView(
-      scrollDirection: Axis.vertical,
-      child: DataTable(
-        sortAscending: sort,
-        sortColumnIndex: 1,
-        columns: [
-          DataColumn(
-            label: Text("ID"),
-            numeric: true,
-            tooltip: "Identificação da Categoria",
-          ),
-          DataColumn(
-              label: Text("Nome"),
-              numeric: false,
-              tooltip: "Nome da Categoria",
-              onSort: (columnIndex, ascending) {
-                setState(() {
-                  sort = !sort;
-                });
-                onSortColum(columnIndex, ascending);
-              }),
-          DataColumn(
-            label: Text("Ações"),
-            numeric: false,
-            tooltip: "Ações",
-          ),
-        ],
-        rows: categoriaController.categoriasLista
-            .map(
-              (categoria) => DataRow(cells: [
-                DataCell(
-                  Text('${categoria.id}'),
-                ),
-                DataCell(
-                  Text(categoria.nome),
-                  onTap: () {
-                    print('Selected ${categoria.nome}');
-                  },
-                ),
-                DataCell(
-                  Icon(Icons.edit),
-                  onTap: () {
-                    print('Selected ${categoria.id}');
-                  },
-                ),
-              ]),
-            )
-            .toList(),
-      ),
-    );
+  Observer dataBody() {
+    return Observer(builder: (_) {
+      if (categoriaController.categoriasLista.isNotEmpty) {
+        return ListView.builder(
+          controller: _scrollController,
+          itemCount: categoriaController.categoriasLista.length,
+          itemBuilder: (context, index) {
+            return Card(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  ListTile(
+                    leading: Icon(Icons.list),
+                    title: Text(
+                        "${categoriaController.categoriasLista[index].nome}"),
+                    subtitle: Text(
+                        "Criado em ${categoriaController.categoriasLista[index].createdAt}"),
+                    trailing: GestureDetector(
+                      child: Icon(Icons.edit),
+                      onTap: () {
+                        Navigator.pushReplacementNamed(context,
+                            "/categorias/edit/${categoriaController.categoriasLista[index].id}");
+                      },
+                    ),
+                  )
+                ],
+              ),
+            );
+          },
+        );
+      } else {
+        return Text("Não existem categorias cadastradas");
+      }
+    });
   }
 
   @override
@@ -108,9 +84,15 @@ class _CategoriaPageState extends State<CategoriaPage> {
             icon: const Icon(Icons.note_add),
             tooltip: 'Nova Categoria',
             onPressed: () {
-              Navigator.pushNamed(context, "/categorias/new");
+              Navigator.pushReplacementNamed(context, "/categorias/new");
             },
           ),
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () async {
+              await showSearch(context: context, delegate: DataSearch());
+            },
+          )
         ],
       ),
       body: Column(
@@ -125,7 +107,7 @@ class _CategoriaPageState extends State<CategoriaPage> {
                     : Center(
                         child: CircularProgressIndicator(),
                       )),
-          )
+          ),
         ],
       ),
     );

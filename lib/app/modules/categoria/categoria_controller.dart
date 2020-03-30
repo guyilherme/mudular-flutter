@@ -13,9 +13,31 @@ abstract class _CategoriaBase with Store {
   @observable
   List<CategoriaModel> categoriasLista;
 
+  @observable
+  dynamic status;
+
+  @observable
+  int lastPage = 1;
+
   @action
-  getCategorias() async {
-    var res = await repo.getCategorias();
-    categoriasLista = res;
+  changeLastPage(int value) => lastPage = value;
+
+  @action
+  getCategorias({int page}) async {
+    List<CategoriaModel> lista;
+    try {
+      final res = await repo.getCategorias(page: page);
+      if (categoriasLista == null) {
+        categoriasLista = res;
+      } else {
+        lista = categoriasLista;
+        res.forEach((element) {
+          lista.add(element);
+        });
+        categoriasLista = lista;
+      }
+    } catch (e) {
+      status = e;
+    }
   }
 }

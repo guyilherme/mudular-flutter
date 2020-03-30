@@ -1,32 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:teha/app/modules/categoria/categoria_editar/categoria_editar_controller.dart';
 import 'package:teha/app/modules/categoria/categoria_module.dart';
-import 'package:teha/app/modules/categoria/categoria_nova/categoria_nova_controller.dart';
 import 'package:validators/validators.dart';
 
-class CategoriaNovaPage extends StatefulWidget {
+class CategoriaEditarPage extends StatefulWidget {
   final String title;
-  const CategoriaNovaPage({Key key, this.title = "Adicionar Nova Categoria"})
+  final String id;
+  const CategoriaEditarPage({Key key, this.title = "Editar Categoria", this.id})
       : super(key: key);
 
   @override
-  _CategoriaNovaPageState createState() => _CategoriaNovaPageState();
+  _CategoriaEditarPageState createState() => _CategoriaEditarPageState();
 }
 
-class _CategoriaNovaPageState extends State<CategoriaNovaPage> {
-  final categoriaController = CategoriaModule.to.get<CategoriaNovaController>();
-  final _formNovaCategoria = GlobalKey<FormState>();
+class _CategoriaEditarPageState extends State<CategoriaEditarPage> {
+  final categoriaController =
+      CategoriaModule.to.get<CategoriaEditarController>();
+  final _formEditarCategoria = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
-    categoriaController.setupValidations();
-  }
-
-  @override
-  void dispose() {
-    categoriaController.dispose();
-    super.dispose();
+    categoriaController.getCategoria(id: int.parse(widget.id));
   }
 
   @override
@@ -38,12 +34,14 @@ class _CategoriaNovaPageState extends State<CategoriaNovaPage> {
       body: Column(
         children: <Widget>[
           Form(
-            key: _formNovaCategoria,
+            key: _formEditarCategoria,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Observer(
                   builder: (_) => TextField(
+                    controller: TextEditingController()
+                      ..text = categoriaController.nomeCategoria,
                     onChanged: (value) =>
                         categoriaController.nomeCategoria = value,
                     decoration: InputDecoration(
@@ -62,7 +60,7 @@ class _CategoriaNovaPageState extends State<CategoriaNovaPage> {
                         categoriaController.changeNomeCategoria(
                             categoriaController.nomeCategoria);
                         categoriaController
-                            .newCategoria(categoriaController.categoria)
+                            .changeCategoria(categoriaController.categoria)
                             .then((res) {
                           if (res.statusCode == 200) {
                             categoriaController.cancheCategoriaCadastrada(true);

@@ -1,39 +1,16 @@
-import 'package:teha/app/models/produto/produtos_model.dart';
-
 class CategoriaModel {
   int id;
   String nome;
   String createdAt;
   String updatedAt;
-  List<ProdutoModel> produtos;
 
-  CategoriaModel({
-    this.id,
-    this.nome,
-    this.createdAt,
-    this.updatedAt,
-    this.produtos,
-  });
+  CategoriaModel({this.id, this.nome, this.createdAt, this.updatedAt});
 
   CategoriaModel.fromJson(Map<String, dynamic> json) {
-    if (json['id'] != null) {
-      id = json['id'];
-    }
-    if (json['Nome'] != null) {
-      nome = json['Nome'];
-    }
-    if (json['created_at'] != null) {
-      createdAt = json['created_at'];
-    }
-    if (json['updated_at'] != null) {
-      updatedAt = json['updated_at'];
-    }
-    if (json['produtos'] != null) {
-      produtos = new List<ProdutoModel>();
-      json['produtos'].forEach((v) {
-        produtos.add(new ProdutoModel.fromJson(v));
-      });
-    }
+    id = json['id'];
+    nome = json['nome'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
   }
 
   Map<String, dynamic> toJson() {
@@ -42,16 +19,7 @@ class CategoriaModel {
       data['id'] = this.id;
     }
     if (this.nome != null) {
-      data['Nome'] = this.nome;
-    }
-    if (this.createdAt != null) {
-      data['created_at'] = this.createdAt;
-    }
-    if (this.updatedAt != null) {
-      data['updated_at'] = this.updatedAt;
-    }
-    if (this.produtos != null) {
-      data['produtos'] = this.produtos.map((v) => v.toJson()).toList();
+      data['nome'] = this.nome;
     }
     return data;
   }
