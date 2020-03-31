@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:teha/app/modules/login/login_controller.dart';
 import 'package:teha/app/modules/login/login_module.dart';
 import 'package:teha/app/widgets/custom_icon_button/custom_icon_button_widget.dart';
@@ -54,13 +53,13 @@ class _LoginPageState extends State<LoginPage> {
                     CustomTextFieldWidget(
                       hint: 'Senha',
                       prefix: Icon(Icons.lock),
-                      obscure: true,
+                      obscure: !loginController.mostrarSenha,
                       onChanged: loginController.changeSenha,
                       enabled: true,
                       suffix: CustomIconButtonWidget(
                         radius: 32,
                         iconData: Icons.visibility,
-                        onTap: () {},
+                        onTap: loginController.setMostrarSenha,
                       ),
                     ),
                     SizedBox(

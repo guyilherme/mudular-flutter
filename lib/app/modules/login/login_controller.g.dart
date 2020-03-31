@@ -95,7 +95,61 @@ mixin _$LoginController on _LoginBase, Store {
     }, _$logadoAtom, name: '${_$logadoAtom.name}_set');
   }
 
+  final _$usuarioLogadoAtom = Atom(name: '_LoginBase.usuarioLogado');
+
+  @override
+  UsuarioModel get usuarioLogado {
+    _$usuarioLogadoAtom.context.enforceReadPolicy(_$usuarioLogadoAtom);
+    _$usuarioLogadoAtom.reportObserved();
+    return super.usuarioLogado;
+  }
+
+  @override
+  set usuarioLogado(UsuarioModel value) {
+    _$usuarioLogadoAtom.context.conditionallyRunInAction(() {
+      super.usuarioLogado = value;
+      _$usuarioLogadoAtom.reportChanged();
+    }, _$usuarioLogadoAtom, name: '${_$usuarioLogadoAtom.name}_set');
+  }
+
+  final _$mostrarSenhaAtom = Atom(name: '_LoginBase.mostrarSenha');
+
+  @override
+  bool get mostrarSenha {
+    _$mostrarSenhaAtom.context.enforceReadPolicy(_$mostrarSenhaAtom);
+    _$mostrarSenhaAtom.reportObserved();
+    return super.mostrarSenha;
+  }
+
+  @override
+  set mostrarSenha(bool value) {
+    _$mostrarSenhaAtom.context.conditionallyRunInAction(() {
+      super.mostrarSenha = value;
+      _$mostrarSenhaAtom.reportChanged();
+    }, _$mostrarSenhaAtom, name: '${_$mostrarSenhaAtom.name}_set');
+  }
+
   final _$_LoginBaseActionController = ActionController(name: '_LoginBase');
+
+  @override
+  dynamic changeUsuario(UsuarioModel value) {
+    final _$actionInfo = _$_LoginBaseActionController.startAction();
+    try {
+      return super.changeUsuario(value);
+    } finally {
+      _$_LoginBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic setMostrarSenha() {
+    final _$actionInfo = _$_LoginBaseActionController.startAction();
+    try {
+      return super.setMostrarSenha();
+    } finally {
+      _$_LoginBaseActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   dynamic changeLogado(bool value) {

@@ -1,4 +1,6 @@
 import 'package:mobx/mobx.dart';
+import 'package:teha/app/models/usuario/usuario_model.dart';
+import 'package:teha/app/modules/login/auth_repository_repository.dart';
 import 'package:teha/app/modules/login/login_repository.dart';
 import 'package:teha/shared/custom_dio/constants.dart';
 
@@ -8,7 +10,8 @@ class LoginController = _LoginBase with _$LoginController;
 
 abstract class _LoginBase with Store {
   final LoginRepository repo;
-  _LoginBase(this.repo);
+  final AuthRepositoryRepository auth;
+  _LoginBase(this.repo, this.auth);
 
   @observable
   String jwt = '';
@@ -21,6 +24,18 @@ abstract class _LoginBase with Store {
 
   @observable
   bool logado = false;
+
+  @observable
+  UsuarioModel usuarioLogado;
+
+  @observable
+  bool mostrarSenha = false;
+
+  @action
+  changeUsuario(UsuarioModel value) => usuarioLogado = value;
+
+  @action
+  setMostrarSenha() => mostrarSenha = !mostrarSenha;
 
   @action
   changeLogado(bool value) => logado = value;
@@ -54,6 +69,10 @@ abstract class _LoginBase with Store {
     });
     jwt = "Bearer ${res['access_token']}";
     logado = true;
+    if (logado == true) {
+      var user = await auth.me();
+      changeUsuario(user);
+    }
     return jwt;
   }
 }
