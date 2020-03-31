@@ -31,6 +31,12 @@ abstract class _LoginBase with Store {
   @observable
   bool mostrarSenha = false;
 
+  @observable
+  bool loading = false;
+
+  @action
+  changeLoading() => loading = !loading;
+
   @action
   changeUsuario(UsuarioModel value) => usuarioLogado = value;
 
@@ -59,6 +65,7 @@ abstract class _LoginBase with Store {
   bool get isFormValid => isEmailValid && isSenhaValid;
 
   Future<String> login(String email, String senha) async {
+    changeLoading();
     var res = await repo.login({
       "username": email,
       "password": senha,
@@ -73,6 +80,7 @@ abstract class _LoginBase with Store {
       var user = await auth.me();
       changeUsuario(user);
     }
+    changeLoading();
     return jwt;
   }
 }

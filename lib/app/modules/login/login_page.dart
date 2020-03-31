@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:teha/app/modules/login/login_controller.dart';
 import 'package:teha/app/modules/login/login_module.dart';
 import 'package:teha/app/widgets/custom_icon_button/custom_icon_button_widget.dart';
@@ -65,45 +66,53 @@ class _LoginPageState extends State<LoginPage> {
                     SizedBox(
                       height: 35.0,
                     ),
-                    SizedBox(
-                      height: 54,
-                      width: MediaQuery.of(context).size.width,
-                      child: RaisedButton(
-                        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(32),
-                        ),
-                        child: Text("Login",
-                            textAlign: TextAlign.center,
-                            style: style.copyWith(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold)),
-                        color: Theme.of(context).primaryColor,
-                        disabledColor:
-                            Theme.of(context).primaryColor.withAlpha(100),
-                        textColor: Colors.white,
-                        onPressed: loginController.isFormValid
-                            ? () {
-                                loginController
-                                    .login(loginController.email,
-                                        loginController.senha)
-                                    .then((e) {
-                                  if (loginController.logado == true) {
+                    Observer(builder: (_) {
+                      return SizedBox(
+                        height: 54,
+                        width: MediaQuery.of(context).size.width,
+                        child: RaisedButton(
+                          padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(32),
+                          ),
+                          child: loginController.loading
+                              ? CircularProgressIndicator(
+                                  valueColor:
+                                      AlwaysStoppedAnimation(Colors.white),
+                                )
+                              : Text("Login",
+                                  textAlign: TextAlign.center,
+                                  style: style.copyWith(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold)),
+                          color: Theme.of(context).primaryColor,
+                          disabledColor:
+                              Theme.of(context).primaryColor.withAlpha(100),
+                          textColor: Colors.white,
+                          onPressed: loginController.isFormValid
+                              ? () {
+                                  loginController
+                                      .login(loginController.email,
+                                          loginController.senha)
+                                      .then((e) {
+                                    if (loginController.logado == true) {
+                                      print(e);
+                                      Navigator.popAndPushNamed(
+                                          context, '/home');
+                                    }
+                                  }).catchError((e) {
                                     print(e);
-                                    Navigator.popAndPushNamed(context, '/home');
-                                  }
-                                }).catchError((e) {
-                                  print(e);
-                                  _scaffoldKey.currentState
-                                      .showSnackBar(SnackBar(
-                                    content: Text('Login Incorreto'),
-                                    duration: Duration(seconds: 3),
-                                  ));
-                                });
-                              }
-                            : null,
-                      ),
-                    ),
+                                    _scaffoldKey.currentState
+                                        .showSnackBar(SnackBar(
+                                      content: Text('Login Incorreto'),
+                                      duration: Duration(seconds: 3),
+                                    ));
+                                  });
+                                }
+                              : null,
+                        ),
+                      );
+                    }),
                     SizedBox(
                       height: 15.0,
                     ),
