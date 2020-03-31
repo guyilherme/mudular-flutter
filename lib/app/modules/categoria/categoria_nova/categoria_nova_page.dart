@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:teha/app/modules/categoria/categoria_module.dart';
 import 'package:teha/app/modules/categoria/categoria_nova/categoria_nova_controller.dart';
-import 'package:validators/validators.dart';
+import 'package:teha/app/widgets/custom_text_field/campo_padrao.dart';
 
 class CategoriaNovaPage extends StatefulWidget {
   final String title;
@@ -18,18 +17,6 @@ class _CategoriaNovaPageState extends State<CategoriaNovaPage> {
   final _formNovaCategoria = GlobalKey<FormState>();
 
   @override
-  void initState() {
-    super.initState();
-    categoriaController.setupValidations();
-  }
-
-  @override
-  void dispose() {
-    categoriaController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -42,40 +29,49 @@ class _CategoriaNovaPageState extends State<CategoriaNovaPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Observer(
-                  builder: (_) => TextField(
-                    onChanged: (value) =>
-                        categoriaController.nomeCategoria = value,
-                    decoration: InputDecoration(
-                        labelText: 'Nome Categoria',
-                        hintText: 'Escolha um nome para a categoria',
-                        errorText: categoriaController.error.nomeCategoria),
-                  ),
+                CampoPadrao(
+                  label: 'Nome Categoria',
+                  onChanged: categoriaController.setNome,
+                  hintText: 'Escolha um nome para a categoria',
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: RaisedButton(
-                    onPressed: () {
-                      categoriaController.validateAll();
-                      if (!isNull(categoriaController.nomeCategoria) ||
-                          categoriaController.nomeCategoria.isNotEmpty) {
-                        categoriaController.changeNomeCategoria(
-                            categoriaController.nomeCategoria);
-                        categoriaController
-                            .newCategoria(categoriaController.categoria)
-                            .then((res) {
-                          if (res.statusCode == 200) {
-                            categoriaController.cancheCategoriaCadastrada(true);
-                            Navigator.popAndPushNamed(context, "/categorias");
-                          } else {
-                            Scaffold.of(context).showSnackBar(SnackBar(
-                                content:
-                                    Text('Ocorreu um erro. Tente novamente')));
-                          }
-                        });
-                      }
-                    },
-                    child: Text('Cadastrar'),
+                  child: SizedBox(
+                    height: 54,
+                    width: MediaQuery.of(context).size.width,
+                    child: RaisedButton(
+                      padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(32),
+                      ),
+                      child: Text(
+                        "Cadastrar",
+                        textAlign: TextAlign.center,
+                      ),
+                      color: Theme.of(context).primaryColor,
+                      disabledColor:
+                          Theme.of(context).primaryColor.withAlpha(100),
+                      textColor: Colors.white,
+                      onPressed: categoriaController.isnomeCategoriaValid
+                          ? () {
+                              categoriaController.changeNomeCategoria();
+                              categoriaController
+                                  .newCategoria(categoriaController.categoria)
+                                  .then((res) {
+                                if (res.statusCode == 200) {
+                                  categoriaController
+                                      .cancheCategoriaCadastrada(true);
+                                  Navigator.popAndPushNamed(
+                                      context, "/categorias");
+                                } else {
+                                  Scaffold.of(context).showSnackBar(SnackBar(
+                                      content: Text(
+                                          'Ocorreu um erro. Tente novamente')));
+                                }
+                              });
+                            }
+                          : null,
+                    ),
                   ),
                 ),
               ],

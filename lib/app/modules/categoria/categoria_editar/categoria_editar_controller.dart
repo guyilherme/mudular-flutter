@@ -56,7 +56,7 @@ abstract class _CategoriaEditarControllerBase with Store {
   }
 
   Future<dynamic> changeCategoria(CategoriaModel categoria) async {
-    var res = await repo.newCategorias(categoria.toJson());
+    var res = await repo.newCategoria(categoria.toJson());
     return res;
   }
 

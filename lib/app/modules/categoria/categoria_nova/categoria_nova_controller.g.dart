@@ -9,6 +9,13 @@ part of 'categoria_nova_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$CategoriaNovaController on _CategoriaNovaControllerBase, Store {
+  Computed<bool> _$isnomeCategoriaValidComputed;
+
+  @override
+  bool get isnomeCategoriaValid => (_$isnomeCategoriaValidComputed ??=
+          Computed<bool>(() => super.isnomeCategoriaValid))
+      .value;
+
   final _$nomeCategoriaAtom =
       Atom(name: '_CategoriaNovaControllerBase.nomeCategoria');
 
@@ -79,49 +86,24 @@ mixin _$CategoriaNovaController on _CategoriaNovaControllerBase, Store {
   }
 
   @override
-  dynamic changeNomeCategoria(String value) {
+  dynamic setNome(String value) {
     final _$actionInfo =
         _$_CategoriaNovaControllerBaseActionController.startAction();
     try {
-      return super.changeNomeCategoria(value);
+      return super.setNome(value);
     } finally {
       _$_CategoriaNovaControllerBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void validadeCategoria(String value) {
+  dynamic changeNomeCategoria() {
     final _$actionInfo =
         _$_CategoriaNovaControllerBaseActionController.startAction();
     try {
-      return super.validadeCategoria(value);
+      return super.changeNomeCategoria();
     } finally {
       _$_CategoriaNovaControllerBaseActionController.endAction(_$actionInfo);
     }
-  }
-}
-
-mixin _$FormErrorState on _FormErrorState, Store {
-  Computed<bool> _$hasErrorsComputed;
-
-  @override
-  bool get hasErrors =>
-      (_$hasErrorsComputed ??= Computed<bool>(() => super.hasErrors)).value;
-
-  final _$nomeCategoriaAtom = Atom(name: '_FormErrorState.nomeCategoria');
-
-  @override
-  String get nomeCategoria {
-    _$nomeCategoriaAtom.context.enforceReadPolicy(_$nomeCategoriaAtom);
-    _$nomeCategoriaAtom.reportObserved();
-    return super.nomeCategoria;
-  }
-
-  @override
-  set nomeCategoria(String value) {
-    _$nomeCategoriaAtom.context.conditionallyRunInAction(() {
-      super.nomeCategoria = value;
-      _$nomeCategoriaAtom.reportChanged();
-    }, _$nomeCategoriaAtom, name: '${_$nomeCategoriaAtom.name}_set');
   }
 }

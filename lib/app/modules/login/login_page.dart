@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:teha/app/modules/login/login_controller.dart';
 import 'package:teha/app/modules/login/login_module.dart';
-import 'package:toast/toast.dart';
+import 'package:teha/app/widgets/custom_icon_button/custom_icon_button_widget.dart';
+import 'package:teha/app/widgets/custom_text_field/custom_text_field_widget.dart';
 
 class LoginPage extends StatefulWidget {
   final String title;
@@ -13,57 +14,14 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final loginController = LoginModule.to.get<LoginController>();
-
-  _textField(
-      {String label, bool password, onChanged, String Function() errorText}) {
-    return TextField(
-      obscureText: password == true ? true : false,
-      decoration: InputDecoration(
-          border: OutlineInputBorder(),
-          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          labelText: label,
-          errorText: errorText == null ? null : errorText()),
-      onChanged: onChanged,
-    );
-  }
 
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
   @override
   Widget build(BuildContext context) {
-    final loginButon = Material(
-      elevation: 5.0,
-      borderRadius: BorderRadius.circular(30.0),
-      color: Colors.green,
-      child: MaterialButton(
-        minWidth: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: () {
-          loginController
-              .login(loginController.email, loginController.senha)
-              .then((e) {
-            if (loginController.logado == true) {
-              print(e);
-              Navigator.popAndPushNamed(context, '/home');
-            }
-          }).catchError((e) {
-            print(e);
-            Toast.show("Login incorreto", context,
-                duration: Toast.LENGTH_LONG,
-                border: Border.all(),
-                gravity: Toast.CENTER,
-                textColor: Colors.red,
-                backgroundRadius: 10,
-                backgroundColor: Colors.white);
-          });
-        },
-        child: Text("Login",
-            textAlign: TextAlign.center,
-            style: style.copyWith(
-                color: Colors.white, fontWeight: FontWeight.bold)),
-      ),
-    );
     return Scaffold(
+      key: _scaffoldKey,
       body: Center(
         child: SingleChildScrollView(
           child: Center(
@@ -85,28 +43,68 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     SizedBox(height: 45.0),
                     // emailField,
-                    Observer(
-                      builder: (_) {
-                        return _textField(
-                            label: "Email",
-                            onChanged: loginController.changeEmail,
-                            errorText: loginController.validateEmail);
-                      },
+                    CustomTextFieldWidget(
+                      hint: 'E-mail',
+                      prefix: Icon(Icons.account_circle),
+                      textInputType: TextInputType.emailAddress,
+                      onChanged: loginController.changeEmail,
+                      enabled: true,
                     ),
                     SizedBox(height: 25.0),
-                    Observer(
-                      builder: (_) {
-                        return _textField(
-                            label: "Senha",
-                            password: true,
-                            onChanged: loginController.changeSenha,
-                            errorText: loginController.validateEmail);
-                      },
+                    CustomTextFieldWidget(
+                      hint: 'Senha',
+                      prefix: Icon(Icons.lock),
+                      obscure: true,
+                      onChanged: loginController.changeSenha,
+                      enabled: true,
+                      suffix: CustomIconButtonWidget(
+                        radius: 32,
+                        iconData: Icons.visibility,
+                        onTap: () {},
+                      ),
                     ),
                     SizedBox(
                       height: 35.0,
                     ),
-                    loginButon,
+                    SizedBox(
+                      height: 54,
+                      width: MediaQuery.of(context).size.width,
+                      child: RaisedButton(
+                        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(32),
+                        ),
+                        child: Text("Login",
+                            textAlign: TextAlign.center,
+                            style: style.copyWith(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold)),
+                        color: Theme.of(context).primaryColor,
+                        disabledColor:
+                            Theme.of(context).primaryColor.withAlpha(100),
+                        textColor: Colors.white,
+                        onPressed: loginController.isFormValid
+                            ? () {
+                                loginController
+                                    .login(loginController.email,
+                                        loginController.senha)
+                                    .then((e) {
+                                  if (loginController.logado == true) {
+                                    print(e);
+                                    Navigator.popAndPushNamed(context, '/home');
+                                  }
+                                }).catchError((e) {
+                                  print(e);
+                                  _scaffoldKey.currentState
+                                      .showSnackBar(SnackBar(
+                                    content: Text('Login Incorreto'),
+                                    duration: Duration(seconds: 3),
+                                  ));
+                                });
+                              }
+                            : null,
+                      ),
+                    ),
                     SizedBox(
                       height: 15.0,
                     ),

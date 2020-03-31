@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:teha/app/app_module.dart';
 import 'package:teha/app/models/categoria/categoria_model.dart';
 import 'package:teha/app/modules/categoria/categoria_controller.dart';

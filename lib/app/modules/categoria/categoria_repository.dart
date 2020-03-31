@@ -32,7 +32,7 @@ class CategoriaRepository extends Disposable {
     }
   }
 
-  Future<dynamic> newCategorias(Map<String, dynamic> data) async {
+  Future<dynamic> newCategoria(Map<String, dynamic> data) async {
     print(data);
     try {
       var response = await _dio.client.post("/api/v1/categorias/", data: data);

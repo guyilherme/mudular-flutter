@@ -1,5 +1,4 @@
 import 'package:mobx/mobx.dart';
-import 'package:teha/app/modules/login/login_module.dart';
 import 'package:teha/app/modules/login/login_repository.dart';
 import 'package:teha/shared/custom_dio/constants.dart';
 
@@ -8,10 +7,11 @@ part 'login_controller.g.dart';
 class LoginController = _LoginBase with _$LoginController;
 
 abstract class _LoginBase with Store {
+  final LoginRepository repo;
+  _LoginBase(this.repo);
+
   @observable
   String jwt = '';
-
-  LoginRepository repo;
 
   @observable
   String email = '';
@@ -34,17 +34,14 @@ abstract class _LoginBase with Store {
   @action
   changeJwt(String value) => jwt = value;
 
-  _LoginBase() {
-    repo = LoginModule.to.get<LoginRepository>();
-  }
+  @computed
+  bool get isEmailValid => email != '';
 
-  String validateEmail() {
-    if (email == null) {
-      return "Este campo é obrigatório";
-    } else {
-      return null;
-    }
-  }
+  @computed
+  bool get isSenhaValid => senha != '';
+
+  @computed
+  bool get isFormValid => isEmailValid && isSenhaValid;
 
   Future<String> login(String email, String senha) async {
     var res = await repo.login({
