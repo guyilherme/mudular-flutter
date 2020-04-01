@@ -42,6 +42,17 @@ class CategoriaRepository extends Disposable {
     }
   }
 
+  Future<CategoriaModel> editCategoria(
+      {int id, Map<String, dynamic> data}) async {
+    try {
+      var response = await _dio.client
+          .patch("/api/v1/categorias/" + id.toString(), data: data);
+      return CategoriaModel.fromJson(response.data);
+    } on DioError catch (e) {
+      throw (e.response.statusCode);
+    }
+  }
+
   //dispose will be called automatically
   @override
   void dispose() {}

@@ -9,6 +9,13 @@ part of 'categoria_editar_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$CategoriaEditarController on _CategoriaEditarControllerBase, Store {
+  Computed<bool> _$isNomeCategoriaValidComputed;
+
+  @override
+  bool get isNomeCategoriaValid => (_$isNomeCategoriaValidComputed ??=
+          Computed<bool>(() => super.isNomeCategoriaValid))
+      .value;
+
   final _$nomeCategoriaAtom =
       Atom(name: '_CategoriaEditarControllerBase.nomeCategoria');
 
@@ -65,15 +72,43 @@ mixin _$CategoriaEditarController on _CategoriaEditarControllerBase, Store {
         name: '${_$categoriaCadastradaAtom.name}_set');
   }
 
+  final _$loadingAtom = Atom(name: '_CategoriaEditarControllerBase.loading');
+
+  @override
+  bool get loading {
+    _$loadingAtom.context.enforceReadPolicy(_$loadingAtom);
+    _$loadingAtom.reportObserved();
+    return super.loading;
+  }
+
+  @override
+  set loading(bool value) {
+    _$loadingAtom.context.conditionallyRunInAction(() {
+      super.loading = value;
+      _$loadingAtom.reportChanged();
+    }, _$loadingAtom, name: '${_$loadingAtom.name}_set');
+  }
+
   final _$getCategoriaAsyncAction = AsyncAction('getCategoria');
 
   @override
-  Future getCategoria({int id}) {
+  Future<void> getCategoria({int id}) {
     return _$getCategoriaAsyncAction.run(() => super.getCategoria(id: id));
   }
 
   final _$_CategoriaEditarControllerBaseActionController =
       ActionController(name: '_CategoriaEditarControllerBase');
+
+  @override
+  dynamic changeLoading() {
+    final _$actionInfo =
+        _$_CategoriaEditarControllerBaseActionController.startAction();
+    try {
+      return super.changeLoading();
+    } finally {
+      _$_CategoriaEditarControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   dynamic cancheCategoriaCadastrada(bool value) {
@@ -95,41 +130,5 @@ mixin _$CategoriaEditarController on _CategoriaEditarControllerBase, Store {
     } finally {
       _$_CategoriaEditarControllerBaseActionController.endAction(_$actionInfo);
     }
-  }
-
-  @override
-  void validadeCategoria(String value) {
-    final _$actionInfo =
-        _$_CategoriaEditarControllerBaseActionController.startAction();
-    try {
-      return super.validadeCategoria(value);
-    } finally {
-      _$_CategoriaEditarControllerBaseActionController.endAction(_$actionInfo);
-    }
-  }
-}
-
-mixin _$FormErrorState on _FormErrorState, Store {
-  Computed<bool> _$hasErrorsComputed;
-
-  @override
-  bool get hasErrors =>
-      (_$hasErrorsComputed ??= Computed<bool>(() => super.hasErrors)).value;
-
-  final _$nomeCategoriaAtom = Atom(name: '_FormErrorState.nomeCategoria');
-
-  @override
-  String get nomeCategoria {
-    _$nomeCategoriaAtom.context.enforceReadPolicy(_$nomeCategoriaAtom);
-    _$nomeCategoriaAtom.reportObserved();
-    return super.nomeCategoria;
-  }
-
-  @override
-  set nomeCategoria(String value) {
-    _$nomeCategoriaAtom.context.conditionallyRunInAction(() {
-      super.nomeCategoria = value;
-      _$nomeCategoriaAtom.reportChanged();
-    }, _$nomeCategoriaAtom, name: '${_$nomeCategoriaAtom.name}_set');
   }
 }

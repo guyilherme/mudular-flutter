@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:teha/app/modules/categoria/categoria_module.dart';
 import 'package:teha/app/modules/categoria/categoria_nova/categoria_nova_controller.dart';
 import 'package:teha/app/widgets/custom_text_field/campo_padrao.dart';
@@ -24,59 +25,61 @@ class _CategoriaNovaPageState extends State<CategoriaNovaPage> {
       ),
       body: Column(
         children: <Widget>[
-          Form(
-            key: _formNovaCategoria,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                CampoPadrao(
-                  label: 'Nome Categoria',
-                  onChanged: categoriaController.setNome,
-                  hintText: 'Escolha um nome para a categoria',
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: SizedBox(
-                    height: 54,
-                    width: MediaQuery.of(context).size.width,
-                    child: RaisedButton(
-                      padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(32),
+          Observer(builder: (_) {
+            return Form(
+              key: _formNovaCategoria,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  CampoPadrao(
+                    label: 'Nome Categoria',
+                    onChanged: categoriaController.setNome,
+                    hintText: 'Escolha um nome para a categoria',
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    child: SizedBox(
+                      height: 54,
+                      width: MediaQuery.of(context).size.width,
+                      child: RaisedButton(
+                        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(32),
+                        ),
+                        child: Text(
+                          "Cadastrar",
+                          textAlign: TextAlign.center,
+                        ),
+                        color: Theme.of(context).primaryColor,
+                        disabledColor:
+                            Theme.of(context).primaryColor.withAlpha(100),
+                        textColor: Colors.white,
+                        onPressed: categoriaController.isnomeCategoriaValid
+                            ? () {
+                                categoriaController.changeNomeCategoria();
+                                categoriaController
+                                    .newCategoria(categoriaController.categoria)
+                                    .then((res) {
+                                  if (res.statusCode == 200) {
+                                    categoriaController
+                                        .cancheCategoriaCadastrada(true);
+                                    Navigator.popAndPushNamed(
+                                        context, "/categorias");
+                                  } else {
+                                    Scaffold.of(context).showSnackBar(SnackBar(
+                                        content: Text(
+                                            'Ocorreu um erro. Tente novamente')));
+                                  }
+                                });
+                              }
+                            : null,
                       ),
-                      child: Text(
-                        "Cadastrar",
-                        textAlign: TextAlign.center,
-                      ),
-                      color: Theme.of(context).primaryColor,
-                      disabledColor:
-                          Theme.of(context).primaryColor.withAlpha(100),
-                      textColor: Colors.white,
-                      onPressed: categoriaController.isnomeCategoriaValid
-                          ? () {
-                              categoriaController.changeNomeCategoria();
-                              categoriaController
-                                  .newCategoria(categoriaController.categoria)
-                                  .then((res) {
-                                if (res.statusCode == 200) {
-                                  categoriaController
-                                      .cancheCategoriaCadastrada(true);
-                                  Navigator.popAndPushNamed(
-                                      context, "/categorias");
-                                } else {
-                                  Scaffold.of(context).showSnackBar(SnackBar(
-                                      content: Text(
-                                          'Ocorreu um erro. Tente novamente')));
-                                }
-                              });
-                            }
-                          : null,
                     ),
                   ),
-                ),
-              ],
-            ),
-          ),
+                ],
+              ),
+            );
+          })
         ],
       ),
     );
