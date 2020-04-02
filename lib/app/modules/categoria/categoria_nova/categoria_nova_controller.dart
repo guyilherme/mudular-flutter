@@ -1,5 +1,6 @@
 import 'package:mobx/mobx.dart';
 import 'package:teha/app/models/categoria/categoria_model.dart';
+import 'package:teha/app/modules/categoria/categoria_controller.dart';
 import 'package:teha/app/modules/categoria/categoria_repository.dart';
 
 part 'categoria_nova_controller.g.dart';
@@ -9,7 +10,8 @@ class CategoriaNovaController = _CategoriaNovaControllerBase
 
 abstract class _CategoriaNovaControllerBase with Store {
   final CategoriaRepository repo;
-  _CategoriaNovaControllerBase(this.repo);
+  final CategoriaController categoriaController;
+  _CategoriaNovaControllerBase(this.repo, this.categoriaController);
 
   @observable
   String nomeCategoria = "";
@@ -37,8 +39,15 @@ abstract class _CategoriaNovaControllerBase with Store {
   @computed
   bool get isnomeCategoriaValid => nomeCategoria != '';
 
+  @action
   Future<dynamic> newCategoria(CategoriaModel categoria) async {
-    var res = await repo.newCategoria(categoria.toJson());
-    return res;
+    try {
+      final res = await repo.newCategoria(categoria.toJson());
+      categoria = res;
+      nomeCategoria = categoria.nome;
+      return res;
+    } catch (e) {
+      throw (e.response.statusCode);
+    }
   }
 }

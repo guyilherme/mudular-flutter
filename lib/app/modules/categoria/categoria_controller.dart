@@ -14,6 +14,9 @@ abstract class _CategoriaBase with Store {
   List<CategoriaModel> categoriasLista;
 
   @observable
+  CategoriaModel categoria;
+
+  @observable
   dynamic status;
 
   @observable
@@ -21,6 +24,9 @@ abstract class _CategoriaBase with Store {
 
   @action
   changeLastPage(int value) => lastPage = value;
+
+  @action
+  changeCategoriasLista(List<CategoriaModel> value) => categoriasLista = value;
 
   @action
   getCategorias({int page}) async {
@@ -38,6 +44,17 @@ abstract class _CategoriaBase with Store {
       }
     } catch (e) {
       status = e;
+    }
+  }
+
+  @action
+  Future<dynamic> deleteCategoria({int id}) async {
+    try {
+      final res = await repo.deleteCategoria(id: id);
+      categoria = res;
+      return categoria;
+    } catch (e) {
+      throw (e.response.statusCode);
     }
   }
 }

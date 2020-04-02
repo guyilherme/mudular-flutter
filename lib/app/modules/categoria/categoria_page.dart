@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:teha/app/models/categoria/categoria_model.dart';
 import 'package:teha/app/modules/categoria/categoria_controller.dart';
 import 'package:teha/app/modules/categoria/categoria_module.dart';
 import 'package:teha/app/modules/categoria/categoria_nova/categoria_nova_controller.dart';
@@ -24,6 +25,7 @@ class _CategoriaPageState extends State<CategoriaPage> {
   @override
   void initState() {
     super.initState();
+    categoriaController.changeCategoriasLista(<CategoriaModel>[]);
     categoriaController.getCategorias(page: page);
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
@@ -62,6 +64,40 @@ class _CategoriaPageState extends State<CategoriaPage> {
                             "/categorias/edit/${categoriaController.categoriasLista[index].id}");
                       },
                     ),
+                    onLongPress: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: Text(
+                              "Excluir ${categoriaController.categoriasLista[index].nome} ?"),
+                          content: Text(
+                              'Você tem certeza que quer excluir a categoria ${categoriaController.categoriasLista[index].nome} ?'),
+                          actions: <Widget>[
+                            FlatButton(
+                              onPressed: () => Navigator.of(context).pop(false),
+                              child: new Text('Não'),
+                            ),
+                            FlatButton(
+                              onPressed: () {
+                                categoriaController
+                                    .deleteCategoria(
+                                        id: categoriaController
+                                            .categoriasLista[index].id)
+                                    .then((value) {
+                                  if (value.id ==
+                                      categoriaController
+                                          .categoriasLista[index].id) {
+                                    Navigator.popAndPushNamed(
+                                        context, "/categorias");
+                                  }
+                                });
+                              },
+                              child: new Text('Sim'),
+                            )
+                          ],
+                        ),
+                      );
+                    },
                   )
                 ],
               ),

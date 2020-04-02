@@ -54,7 +54,37 @@ class DataSearch extends SearchDelegate<String> {
                 subtitle: Text(snapshot.data[index].createdAt),
                 leading: Icon(Icons.list),
                 onTap: () {
-                  print(snapshot.data[index].nome);
+                  Navigator.pushReplacementNamed(
+                      context, "/categorias/edit/${snapshot.data[index].id}");
+                },
+                onLongPress: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: Text("Excluir ${snapshot.data[index].nome} ?"),
+                      content: Text(
+                          'Você tem certeza que quer excluir a categoria ${snapshot.data[index].nome} ?'),
+                      actions: <Widget>[
+                        FlatButton(
+                          onPressed: () => Navigator.of(context).pop(false),
+                          child: new Text('Não'),
+                        ),
+                        FlatButton(
+                          onPressed: () {
+                            categoriaController
+                                .deleteCategoria(id: snapshot.data[index].id)
+                                .then((value) {
+                              if (value.id == snapshot.data[index].id) {
+                                Navigator.popAndPushNamed(
+                                    context, "/categorias");
+                              }
+                            });
+                          },
+                          child: new Text('Sim'),
+                        )
+                      ],
+                    ),
+                  );
                 },
               );
             },

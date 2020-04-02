@@ -51,18 +51,22 @@ class _LoginPageState extends State<LoginPage> {
                       enabled: true,
                     ),
                     SizedBox(height: 25.0),
-                    CustomTextFieldWidget(
-                      hint: 'Senha',
-                      prefix: Icon(Icons.lock),
-                      obscure: !loginController.mostrarSenha,
-                      onChanged: loginController.changeSenha,
-                      enabled: true,
-                      suffix: CustomIconButtonWidget(
-                        radius: 32,
-                        iconData: Icons.visibility,
-                        onTap: loginController.setMostrarSenha,
-                      ),
-                    ),
+                    Observer(builder: (_) {
+                      return CustomTextFieldWidget(
+                        hint: 'Senha',
+                        prefix: Icon(Icons.lock),
+                        obscure: !loginController.mostrarSenha,
+                        onChanged: loginController.changeSenha,
+                        enabled: true,
+                        suffix: CustomIconButtonWidget(
+                          radius: 32,
+                          iconData: !loginController.mostrarSenha
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          onTap: loginController.setMostrarSenha,
+                        ),
+                      );
+                    }),
                     SizedBox(
                       height: 35.0,
                     ),

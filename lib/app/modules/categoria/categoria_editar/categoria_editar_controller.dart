@@ -1,5 +1,6 @@
 import 'package:mobx/mobx.dart';
 import 'package:teha/app/models/categoria/categoria_model.dart';
+import 'package:teha/app/modules/categoria/categoria_controller.dart';
 import 'package:teha/app/modules/categoria/categoria_repository.dart';
 
 part 'categoria_editar_controller.g.dart';
@@ -9,7 +10,8 @@ class CategoriaEditarController = _CategoriaEditarControllerBase
 
 abstract class _CategoriaEditarControllerBase with Store {
   final CategoriaRepository repo;
-  _CategoriaEditarControllerBase(this.repo);
+  final CategoriaController categoriaController;
+  _CategoriaEditarControllerBase(this.repo, this.categoriaController);
 
   @observable
   String nomeCategoria = "";

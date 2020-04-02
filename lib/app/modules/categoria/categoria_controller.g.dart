@@ -26,6 +26,23 @@ mixin _$CategoriaController on _CategoriaBase, Store {
     }, _$categoriasListaAtom, name: '${_$categoriasListaAtom.name}_set');
   }
 
+  final _$categoriaAtom = Atom(name: '_CategoriaBase.categoria');
+
+  @override
+  CategoriaModel get categoria {
+    _$categoriaAtom.context.enforceReadPolicy(_$categoriaAtom);
+    _$categoriaAtom.reportObserved();
+    return super.categoria;
+  }
+
+  @override
+  set categoria(CategoriaModel value) {
+    _$categoriaAtom.context.conditionallyRunInAction(() {
+      super.categoria = value;
+      _$categoriaAtom.reportChanged();
+    }, _$categoriaAtom, name: '${_$categoriaAtom.name}_set');
+  }
+
   final _$statusAtom = Atom(name: '_CategoriaBase.status');
 
   @override
@@ -68,6 +85,14 @@ mixin _$CategoriaController on _CategoriaBase, Store {
         .run(() => super.getCategorias(page: page));
   }
 
+  final _$deleteCategoriaAsyncAction = AsyncAction('deleteCategoria');
+
+  @override
+  Future<dynamic> deleteCategoria({int id}) {
+    return _$deleteCategoriaAsyncAction
+        .run(() => super.deleteCategoria(id: id));
+  }
+
   final _$_CategoriaBaseActionController =
       ActionController(name: '_CategoriaBase');
 
@@ -76,6 +101,16 @@ mixin _$CategoriaController on _CategoriaBase, Store {
     final _$actionInfo = _$_CategoriaBaseActionController.startAction();
     try {
       return super.changeLastPage(value);
+    } finally {
+      _$_CategoriaBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic changeCategoriasLista(List<CategoriaModel> value) {
+    final _$actionInfo = _$_CategoriaBaseActionController.startAction();
+    try {
+      return super.changeCategoriasLista(value);
     } finally {
       _$_CategoriaBaseActionController.endAction(_$actionInfo);
     }

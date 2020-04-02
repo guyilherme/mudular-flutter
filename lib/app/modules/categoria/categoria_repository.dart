@@ -32,11 +32,11 @@ class CategoriaRepository extends Disposable {
     }
   }
 
-  Future<dynamic> newCategoria(Map<String, dynamic> data) async {
+  Future<CategoriaModel> newCategoria(Map<String, dynamic> data) async {
     print(data);
     try {
       var response = await _dio.client.post("/api/v1/categorias/", data: data);
-      return response;
+      return CategoriaModel.fromJson(response.data);
     } on DioError catch (e) {
       throw (e.response.statusCode);
     }
@@ -47,6 +47,16 @@ class CategoriaRepository extends Disposable {
     try {
       var response = await _dio.client
           .patch("/api/v1/categorias/" + id.toString(), data: data);
+      return CategoriaModel.fromJson(response.data);
+    } on DioError catch (e) {
+      throw (e.response.statusCode);
+    }
+  }
+
+  Future<CategoriaModel> deleteCategoria({int id}) async {
+    try {
+      var response =
+          await _dio.client.delete("/api/v1/categorias/" + id.toString());
       return CategoriaModel.fromJson(response.data);
     } on DioError catch (e) {
       throw (e.response.statusCode);

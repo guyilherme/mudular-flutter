@@ -17,6 +17,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  flutter_launcher_icons: ^0.7.4
   simple_gravatar: ^1.0.5
   validators: ^2.0.0+1
   toast: ^0.1.5
@@ -83,3 +84,8 @@ scripts:
   build: flutter pub run build_runner build
   watch: flutter pub run build_runner watch
   clean: flutter pub run build_runner clean
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/logo.png"

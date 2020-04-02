@@ -71,6 +71,13 @@ mixin _$CategoriaNovaController on _CategoriaNovaControllerBase, Store {
         name: '${_$categoriaCadastradaAtom.name}_set');
   }
 
+  final _$newCategoriaAsyncAction = AsyncAction('newCategoria');
+
+  @override
+  Future<dynamic> newCategoria(CategoriaModel categoria) {
+    return _$newCategoriaAsyncAction.run(() => super.newCategoria(categoria));
+  }
+
   final _$_CategoriaNovaControllerBaseActionController =
       ActionController(name: '_CategoriaNovaControllerBase');
 

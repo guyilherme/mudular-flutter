@@ -1,4 +1,4 @@
-const BASE_URL = "http://192.168.0.109:1337";
+const BASE_URL = "http://api.tehanatural.com.br";
 const TOKEN_END_POINT = "/oauth/token";
 const IDENTIFIER = "2";
 const SECRET = "k5AvEKpHiAqNxPg4fhEhorGY8S9QAZwem3YaAvbh";

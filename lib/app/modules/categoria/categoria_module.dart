@@ -14,8 +14,10 @@ class CategoriaModule extends ChildModule {
   @override
   List<Bind> get binds => [
         Bind((i) => DataSearchController()),
-        Bind((i) => CategoriaEditarController(i.get<CategoriaRepository>())),
-        Bind((i) => CategoriaNovaController(i.get<CategoriaRepository>())),
+        Bind((i) => CategoriaEditarController(
+            i.get<CategoriaRepository>(), i.get<CategoriaController>())),
+        Bind((i) => CategoriaNovaController(
+            i.get<CategoriaRepository>(), i.get<CategoriaController>())),
         Bind((i) => CategoriaRepository(AppModule.to.get<CustomDio>())),
         Bind((i) => CategoriaController(i.get<CategoriaRepository>())),
       ];

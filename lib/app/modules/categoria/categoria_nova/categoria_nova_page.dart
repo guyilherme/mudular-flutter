@@ -14,7 +14,8 @@ class CategoriaNovaPage extends StatefulWidget {
 }
 
 class _CategoriaNovaPageState extends State<CategoriaNovaPage> {
-  final categoriaController = CategoriaModule.to.get<CategoriaNovaController>();
+  final categoriaNovaController =
+      CategoriaModule.to.get<CategoriaNovaController>();
   final _formNovaCategoria = GlobalKey<FormState>();
 
   @override
@@ -22,6 +23,11 @@ class _CategoriaNovaPageState extends State<CategoriaNovaPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.popAndPushNamed(context, "/categorias");
+            }),
       ),
       body: Column(
         children: <Widget>[
@@ -33,7 +39,7 @@ class _CategoriaNovaPageState extends State<CategoriaNovaPage> {
                 children: <Widget>[
                   CampoPadrao(
                     label: 'Nome Categoria',
-                    onChanged: categoriaController.setNome,
+                    onChanged: categoriaNovaController.setNome,
                     hintText: 'Escolha um nome para a categoria',
                   ),
                   Padding(
@@ -54,14 +60,16 @@ class _CategoriaNovaPageState extends State<CategoriaNovaPage> {
                         disabledColor:
                             Theme.of(context).primaryColor.withAlpha(100),
                         textColor: Colors.white,
-                        onPressed: categoriaController.isnomeCategoriaValid
+                        onPressed: categoriaNovaController.isnomeCategoriaValid
                             ? () {
-                                categoriaController.changeNomeCategoria();
-                                categoriaController
-                                    .newCategoria(categoriaController.categoria)
+                                categoriaNovaController.changeNomeCategoria();
+                                categoriaNovaController
+                                    .newCategoria(
+                                        categoriaNovaController.categoria)
                                     .then((res) {
-                                  if (res.statusCode == 200) {
-                                    categoriaController
+                                  if (res.nome ==
+                                      categoriaNovaController.nomeCategoria) {
+                                    categoriaNovaController
                                         .cancheCategoriaCadastrada(true);
                                     Navigator.popAndPushNamed(
                                         context, "/categorias");

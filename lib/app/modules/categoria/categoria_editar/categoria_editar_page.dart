@@ -101,51 +101,49 @@ class _CategoriaEditarPageState extends State<CategoriaEditarPage> {
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 16.0),
                     child: Observer(builder: (_) {
-                      return Center(
-                        child: SizedBox(
-                          height: 54,
-                          child: RaisedButton(
-                            padding:
-                                EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(32),
-                            ),
-                            child: categoriaController.loading
-                                ? CircularProgressIndicator(
-                                    valueColor:
-                                        AlwaysStoppedAnimation(Colors.white),
-                                  )
-                                : Text(
-                                    "Cadastrar",
-                                    textAlign: TextAlign.center,
-                                  ),
-                            color: Theme.of(context).primaryColor,
-                            disabledColor:
-                                Theme.of(context).primaryColor.withAlpha(100),
-                            textColor: Colors.white,
-                            onPressed: categoriaController.isNomeCategoriaValid
-                                ? () {
-                                    categoriaController.changeNomeCategoria(
-                                        categoriaController.nomeCategoria);
-                                    categoriaController
-                                        .changeCategoria(
-                                            categoriaController.categoria)
-                                        .then((res) {
-                                      if (res.nome ==
-                                          categoriaController.nomeCategoria) {
-                                        categoriaController
-                                            .cancheCategoriaCadastrada(true);
-                                        Navigator.popAndPushNamed(
-                                            context, "/categorias");
-                                      } else {
-                                        Scaffold.of(context).showSnackBar(SnackBar(
-                                            content: Text(
-                                                'Ocorreu um erro. Tente novamente')));
-                                      }
-                                    });
-                                  }
-                                : null,
+                      return SizedBox(
+                        height: 54,
+                        width: MediaQuery.of(context).size.width,
+                        child: RaisedButton(
+                          padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(32),
                           ),
+                          child: categoriaController.loading
+                              ? CircularProgressIndicator(
+                                  valueColor:
+                                      AlwaysStoppedAnimation(Colors.white),
+                                )
+                              : Text(
+                                  "Cadastrar",
+                                  textAlign: TextAlign.center,
+                                ),
+                          color: Theme.of(context).primaryColor,
+                          disabledColor:
+                              Theme.of(context).primaryColor.withAlpha(100),
+                          textColor: Colors.white,
+                          onPressed: categoriaController.isNomeCategoriaValid
+                              ? () {
+                                  categoriaController.changeNomeCategoria(
+                                      categoriaController.nomeCategoria);
+                                  categoriaController
+                                      .changeCategoria(
+                                          categoriaController.categoria)
+                                      .then((res) {
+                                    if (res.nome ==
+                                        categoriaController.nomeCategoria) {
+                                      categoriaController
+                                          .cancheCategoriaCadastrada(true);
+                                      Navigator.popAndPushNamed(
+                                          context, "/categorias");
+                                    } else {
+                                      Scaffold.of(context).showSnackBar(SnackBar(
+                                          content: Text(
+                                              'Ocorreu um erro. Tente novamente')));
+                                    }
+                                  });
+                                }
+                              : null,
                         ),
                       );
                     }),
