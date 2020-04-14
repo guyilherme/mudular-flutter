@@ -17,6 +17,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  draggable_fab: ^0.1.1
   flutter_launcher_icons: ^0.7.4
   simple_gravatar: ^1.0.5
   validators: ^2.0.0+1

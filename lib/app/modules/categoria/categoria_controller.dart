@@ -22,6 +22,42 @@ abstract class _CategoriaBase with Store {
   @observable
   int lastPage = 1;
 
+  @observable
+  String columnOrder = "id";
+
+  @observable
+  String order = "asc";
+
+  @observable
+  bool buttomId = true;
+
+  @observable
+  bool buttomAz = false;
+
+  @action
+  changeButtomId(bool value) {
+    buttomId = value;
+    if (buttomAz == true) {
+      buttomAz = !value;
+    }
+    columnOrder = "id";
+  }
+
+  @action
+  changeButtomAz(bool value) {
+    buttomAz = value;
+    if (buttomAz == true) {
+      buttomId = !value;
+    }
+    columnOrder = "nome";
+  }
+
+  @action
+  changeColumnOrder(String value) => columnOrder = value;
+
+  @action
+  changeOrder(String value) => order = value;
+
   @action
   changeLastPage(int value) => lastPage = value;
 
@@ -29,10 +65,11 @@ abstract class _CategoriaBase with Store {
   changeCategoriasLista(List<CategoriaModel> value) => categoriasLista = value;
 
   @action
-  getCategorias({int page}) async {
+  getCategorias({int page, String columnOrder, String order}) async {
     List<CategoriaModel> lista;
     try {
-      final res = await repo.getCategorias(page: page);
+      final res = await repo.getCategorias(
+          page: page, columnOrder: columnOrder, order: order);
       if (categoriasLista == null) {
         categoriasLista = res;
       } else {

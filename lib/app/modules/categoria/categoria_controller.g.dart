@@ -77,12 +77,80 @@ mixin _$CategoriaController on _CategoriaBase, Store {
     }, _$lastPageAtom, name: '${_$lastPageAtom.name}_set');
   }
 
+  final _$columnOrderAtom = Atom(name: '_CategoriaBase.columnOrder');
+
+  @override
+  String get columnOrder {
+    _$columnOrderAtom.context.enforceReadPolicy(_$columnOrderAtom);
+    _$columnOrderAtom.reportObserved();
+    return super.columnOrder;
+  }
+
+  @override
+  set columnOrder(String value) {
+    _$columnOrderAtom.context.conditionallyRunInAction(() {
+      super.columnOrder = value;
+      _$columnOrderAtom.reportChanged();
+    }, _$columnOrderAtom, name: '${_$columnOrderAtom.name}_set');
+  }
+
+  final _$orderAtom = Atom(name: '_CategoriaBase.order');
+
+  @override
+  String get order {
+    _$orderAtom.context.enforceReadPolicy(_$orderAtom);
+    _$orderAtom.reportObserved();
+    return super.order;
+  }
+
+  @override
+  set order(String value) {
+    _$orderAtom.context.conditionallyRunInAction(() {
+      super.order = value;
+      _$orderAtom.reportChanged();
+    }, _$orderAtom, name: '${_$orderAtom.name}_set');
+  }
+
+  final _$buttomIdAtom = Atom(name: '_CategoriaBase.buttomId');
+
+  @override
+  bool get buttomId {
+    _$buttomIdAtom.context.enforceReadPolicy(_$buttomIdAtom);
+    _$buttomIdAtom.reportObserved();
+    return super.buttomId;
+  }
+
+  @override
+  set buttomId(bool value) {
+    _$buttomIdAtom.context.conditionallyRunInAction(() {
+      super.buttomId = value;
+      _$buttomIdAtom.reportChanged();
+    }, _$buttomIdAtom, name: '${_$buttomIdAtom.name}_set');
+  }
+
+  final _$buttomAzAtom = Atom(name: '_CategoriaBase.buttomAz');
+
+  @override
+  bool get buttomAz {
+    _$buttomAzAtom.context.enforceReadPolicy(_$buttomAzAtom);
+    _$buttomAzAtom.reportObserved();
+    return super.buttomAz;
+  }
+
+  @override
+  set buttomAz(bool value) {
+    _$buttomAzAtom.context.conditionallyRunInAction(() {
+      super.buttomAz = value;
+      _$buttomAzAtom.reportChanged();
+    }, _$buttomAzAtom, name: '${_$buttomAzAtom.name}_set');
+  }
+
   final _$getCategoriasAsyncAction = AsyncAction('getCategorias');
 
   @override
-  Future getCategorias({int page}) {
-    return _$getCategoriasAsyncAction
-        .run(() => super.getCategorias(page: page));
+  Future getCategorias({int page, String columnOrder, String order}) {
+    return _$getCategoriasAsyncAction.run(() => super
+        .getCategorias(page: page, columnOrder: columnOrder, order: order));
   }
 
   final _$deleteCategoriaAsyncAction = AsyncAction('deleteCategoria');
@@ -95,6 +163,46 @@ mixin _$CategoriaController on _CategoriaBase, Store {
 
   final _$_CategoriaBaseActionController =
       ActionController(name: '_CategoriaBase');
+
+  @override
+  dynamic changeButtomId(bool value) {
+    final _$actionInfo = _$_CategoriaBaseActionController.startAction();
+    try {
+      return super.changeButtomId(value);
+    } finally {
+      _$_CategoriaBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic changeButtomAz(bool value) {
+    final _$actionInfo = _$_CategoriaBaseActionController.startAction();
+    try {
+      return super.changeButtomAz(value);
+    } finally {
+      _$_CategoriaBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic changeColumnOrder(String value) {
+    final _$actionInfo = _$_CategoriaBaseActionController.startAction();
+    try {
+      return super.changeColumnOrder(value);
+    } finally {
+      _$_CategoriaBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic changeOrder(String value) {
+    final _$actionInfo = _$_CategoriaBaseActionController.startAction();
+    try {
+      return super.changeOrder(value);
+    } finally {
+      _$_CategoriaBaseActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   dynamic changeLastPage(int value) {

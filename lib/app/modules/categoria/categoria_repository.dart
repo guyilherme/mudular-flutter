@@ -8,11 +8,21 @@ import 'package:teha/shared/custom_dio/custom_dio.dart';
 class CategoriaRepository extends Disposable {
   final CustomDio _dio;
   CategoriaRepository(this._dio);
-  Future<List<CategoriaModel>> getCategorias({int page = 1}) async {
+  Future<List<CategoriaModel>> getCategorias(
+      {int page = 1, String columnOrder = "id", String order = "asc"}) async {
     final categoriaController = CategoriaModule.to.get<CategoriaController>();
+    String url;
+
     try {
-      var response =
-          await _dio.client.get("/api/v1/categorias/?page=" + page.toString());
+      if (columnOrder.isNotEmpty && order.isNotEmpty) {
+        url = "/api/v1/categorias/?page=" +
+            page.toString() +
+            "&order=" +
+            columnOrder.toString() +
+            "," +
+            order.toString();
+      }
+      var response = await _dio.client.get(url);
       categoriaController.changeLastPage(response.data['last_page']);
       return (response.data['data'] as List)
           .map((e) => CategoriaModel.fromJson(e))

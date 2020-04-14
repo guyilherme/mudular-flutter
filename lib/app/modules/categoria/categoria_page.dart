@@ -1,3 +1,4 @@
+import 'package:draggable_fab/draggable_fab.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:teha/app/models/categoria/categoria_model.dart';
@@ -5,6 +6,7 @@ import 'package:teha/app/modules/categoria/categoria_controller.dart';
 import 'package:teha/app/modules/categoria/categoria_module.dart';
 import 'package:teha/app/modules/categoria/categoria_nova/categoria_nova_controller.dart';
 import 'package:teha/app/modules/categoria/data_search/data_search_widget.dart';
+import 'package:teha/app/widgets/dialog_order/dialog_order_widget.dart';
 
 class CategoriaPage extends StatefulWidget {
   final String title;
@@ -21,12 +23,16 @@ class _CategoriaPageState extends State<CategoriaPage> {
       CategoriaModule.to.get<CategoriaNovaController>();
   bool sort;
   int page = 1;
+  Offset position = Offset(20.0, 20.0);
 
   @override
   void initState() {
     super.initState();
     categoriaController.changeCategoriasLista(<CategoriaModel>[]);
-    categoriaController.getCategorias(page: page);
+    categoriaController.getCategorias(
+        page: page,
+        columnOrder: categoriaController.columnOrder,
+        order: categoriaController.order);
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
               _scrollController.position.maxScrollExtent &&
@@ -34,7 +40,10 @@ class _CategoriaPageState extends State<CategoriaPage> {
         setState(() {
           page = page + 1;
         });
-        categoriaController.getCategorias(page: page);
+        categoriaController.getCategorias(
+            page: page,
+            columnOrder: categoriaController.columnOrder,
+            order: categoriaController.order);
       }
     });
   }
@@ -87,8 +96,10 @@ class _CategoriaPageState extends State<CategoriaPage> {
                                   if (value.id ==
                                       categoriaController
                                           .categoriasLista[index].id) {
-                                    Navigator.popAndPushNamed(
-                                        context, "/categorias");
+                                    Navigator.pushNamedAndRemoveUntil(
+                                        context,
+                                        '/categorias',
+                                        ModalRoute.withName('/home'));
                                   }
                                 });
                               },
@@ -116,19 +127,29 @@ class _CategoriaPageState extends State<CategoriaPage> {
       appBar: AppBar(
         title: Text(widget.title),
         actions: <Widget>[
+          Observer(builder: (_) {
+            return Ink(
+              decoration: ShapeDecoration(
+                  shape: CircleBorder(), color: Theme.of(context).primaryColor),
+              child: IconButton(
+                icon: Icon(Icons.sort),
+                onPressed: () {
+                  showDialog(
+                      barrierDismissible: false,
+                      context: context,
+                      builder: (context) =>
+                          DialogOrderWidget(categoriaController));
+                },
+              ),
+            );
+          }),
           IconButton(
-            icon: const Icon(Icons.note_add),
+            icon: Icon(Icons.note_add),
             tooltip: 'Nova Categoria',
             onPressed: () {
               Navigator.pushReplacementNamed(context, "/categorias/new");
             },
           ),
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () async {
-              await showSearch(context: context, delegate: DataSearch());
-            },
-          )
         ],
       ),
       body: Column(
@@ -145,6 +166,15 @@ class _CategoriaPageState extends State<CategoriaPage> {
                       )),
           ),
         ],
+      ),
+      floatingActionButton: DraggableFab(
+        child: FloatingActionButton(
+          backgroundColor: Theme.of(context).primaryColor,
+          child: Icon(Icons.search),
+          onPressed: () async {
+            await showSearch(context: context, delegate: DataSearch());
+          },
+        ),
       ),
     );
   }

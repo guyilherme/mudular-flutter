@@ -12,12 +12,12 @@ class AppWidget extends StatelessWidget {
       navigatorKey: navigatorKey.navigatorKey,
       theme: ThemeData(
         primarySwatch: Colors.green,
-        accentColor: Colors.orange,
+        accentColor: Colors.green,
         textTheme: TextTheme(
           headline3: TextStyle(
             fontFamily: 'OpenSans',
             fontSize: 45.0,
-            color: Colors.orange,
+            color: Colors.green,
           ),
           button: TextStyle(
             fontFamily: 'OpenSans',
