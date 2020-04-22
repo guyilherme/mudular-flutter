@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:teha/app/modules/categoria/categoria_module.dart';
+import 'package:teha/app/modules/produto/produto_module.dart';
 import 'package:teha/app/modules/sidemenu/sidemenu_controller.dart';
 import 'package:teha/app/app_controller.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -22,6 +23,7 @@ class AppModule extends MainModule {
   @override
   List<Router> get routers => [
         Router('/', module: LoginModule()),
+        Router('/produtos', module: ProdutoModule()),
         Router('/categorias', module: CategoriaModule())
       ];
 
