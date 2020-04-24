@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:teha/app/models/categoria/categoria_model.dart';
 
 class DialogOrderWidget extends StatelessWidget {
   final controller;
@@ -47,8 +48,14 @@ class DialogOrderWidget extends StatelessWidget {
                   controller.changeButtomAz(false);
                   controller.changeColumnOrder('id');
                   controller.changeOrder('asc');
-                  Navigator.pushNamedAndRemoveUntil(
-                      context, '/categorias', ModalRoute.withName('/home'));
+                  controller.changeCategoriasLista(<CategoriaModel>[]);
+                  controller.getCategorias(
+                      page: controller.lastPage,
+                      columnOrder: controller.columnOrder,
+                      order: controller.order);
+                  Navigator.pop(context, true);
+                  // Navigator.pushNamedAndRemoveUntil(
+                  //     context, '/categorias', ModalRoute.withName('/home'));
                 },
               ),
               FlatButton(
@@ -60,8 +67,12 @@ class DialogOrderWidget extends StatelessWidget {
                   if (controller.buttomAz) {
                     controller.changeColumnOrder('nome');
                   }
-                  Navigator.pushNamedAndRemoveUntil(
-                      context, '/categorias', ModalRoute.withName('/home'));
+                  controller.changeCategoriasLista(<CategoriaModel>[]);
+                  controller.getCategorias(
+                      page: controller.lastPage,
+                      columnOrder: controller.columnOrder,
+                      order: controller.order);
+                  Navigator.pop(context, true);
                 },
               ),
             ],

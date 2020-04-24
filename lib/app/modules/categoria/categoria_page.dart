@@ -127,22 +127,20 @@ class _CategoriaPageState extends State<CategoriaPage> {
       appBar: AppBar(
         title: Text(widget.title),
         actions: <Widget>[
-          Observer(builder: (_) {
-            return Ink(
-              decoration: ShapeDecoration(
-                  shape: CircleBorder(), color: Theme.of(context).primaryColor),
-              child: IconButton(
-                icon: Icon(Icons.sort),
-                onPressed: () {
-                  showDialog(
-                      barrierDismissible: false,
-                      context: context,
-                      builder: (context) =>
-                          DialogOrderWidget(categoriaController));
-                },
-              ),
-            );
-          }),
+          Ink(
+            decoration: ShapeDecoration(
+                shape: CircleBorder(), color: Theme.of(context).primaryColor),
+            child: IconButton(
+              icon: Icon(Icons.sort),
+              onPressed: () {
+                showDialog(
+                    barrierDismissible: false,
+                    context: context,
+                    builder: (context) =>
+                        DialogOrderWidget(categoriaController));
+              },
+            ),
+          ),
           IconButton(
             icon: Icon(Icons.note_add),
             tooltip: 'Nova Categoria',
