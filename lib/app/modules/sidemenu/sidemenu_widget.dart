@@ -35,7 +35,13 @@ class SidemenuWidget extends StatelessWidget {
             },
           ),
           ListTile(
-            title: Text('Item 2'),
+            title: Text('Produtos'),
+            onTap: () {
+              Navigator.pushNamed(context, '/produtos');
+            },
+          ),
+          ListTile(
+            title: Text('Item 3'),
             onTap: () {
               Navigator.pop(context);
             },

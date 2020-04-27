@@ -22,10 +22,17 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         children: <Widget>[
           RaisedButton(
+            child: Text("Categoria"),
             onPressed: () {
               Navigator.pushNamed(context, "/categorias");
             },
-          )
+          ),
+          RaisedButton(
+            child: Text("Produto"),
+            onPressed: () {
+              Navigator.pushNamed(context, "/produtos");
+            },
+          ),
         ],
       ),
     );

@@ -23,6 +23,9 @@ abstract class _CategoriaBase with Store {
   int lastPage = 1;
 
   @observable
+  int page = 1;
+
+  @observable
   String columnOrder = "id";
 
   @observable
@@ -37,19 +40,20 @@ abstract class _CategoriaBase with Store {
   @action
   changeButtomId(bool value) {
     buttomId = value;
-    if (buttomAz == true) {
-      buttomAz = !value;
-    }
+    buttomAz = !value;
     columnOrder = "id";
   }
 
   @action
   changeButtomAz(bool value) {
     buttomAz = value;
-    if (buttomAz == true) {
-      buttomId = !value;
-    }
+    buttomId = !value;
     columnOrder = "nome";
+  }
+
+  @action
+  changePage() {
+    page++;
   }
 
   @action

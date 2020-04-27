@@ -22,7 +22,6 @@ class _CategoriaPageState extends State<CategoriaPage> {
   final novaCategoriaController =
       CategoriaModule.to.get<CategoriaNovaController>();
   bool sort;
-  int page = 1;
   Offset position = Offset(20.0, 20.0);
 
   @override
@@ -30,18 +29,16 @@ class _CategoriaPageState extends State<CategoriaPage> {
     super.initState();
     categoriaController.changeCategoriasLista(<CategoriaModel>[]);
     categoriaController.getCategorias(
-        page: page,
+        page: categoriaController.page,
         columnOrder: categoriaController.columnOrder,
         order: categoriaController.order);
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
               _scrollController.position.maxScrollExtent &&
-          page < categoriaController.lastPage) {
-        setState(() {
-          page = page + 1;
-        });
+          categoriaController.page < categoriaController.lastPage) {
+        categoriaController.changePage();
         categoriaController.getCategorias(
-            page: page,
+            page: categoriaController.page,
             columnOrder: categoriaController.columnOrder,
             order: categoriaController.order);
       }

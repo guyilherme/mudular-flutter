@@ -77,6 +77,23 @@ mixin _$CategoriaController on _CategoriaBase, Store {
     }, _$lastPageAtom, name: '${_$lastPageAtom.name}_set');
   }
 
+  final _$pageAtom = Atom(name: '_CategoriaBase.page');
+
+  @override
+  int get page {
+    _$pageAtom.context.enforceReadPolicy(_$pageAtom);
+    _$pageAtom.reportObserved();
+    return super.page;
+  }
+
+  @override
+  set page(int value) {
+    _$pageAtom.context.conditionallyRunInAction(() {
+      super.page = value;
+      _$pageAtom.reportChanged();
+    }, _$pageAtom, name: '${_$pageAtom.name}_set');
+  }
+
   final _$columnOrderAtom = Atom(name: '_CategoriaBase.columnOrder');
 
   @override
@@ -179,6 +196,16 @@ mixin _$CategoriaController on _CategoriaBase, Store {
     final _$actionInfo = _$_CategoriaBaseActionController.startAction();
     try {
       return super.changeButtomAz(value);
+    } finally {
+      _$_CategoriaBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic changePage() {
+    final _$actionInfo = _$_CategoriaBaseActionController.startAction();
+    try {
+      return super.changePage();
     } finally {
       _$_CategoriaBaseActionController.endAction(_$actionInfo);
     }
